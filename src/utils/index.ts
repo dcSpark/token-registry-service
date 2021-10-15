@@ -1,4 +1,8 @@
 import type { Router } from 'express';
+import path from 'path';
+import fs from 'fs';
+
+import type { PolicyInfoMap } from './../api/v1-get-token-info';
 
 export const contentTypeHeaders = { headers: { 'Content-Type': 'application/json' } };
 
@@ -17,3 +21,31 @@ export function assertNever(x: never): never {
 }
 
 export type Nullable<T> = T | null;
+
+export function readTokenRegistryMappings(): PolicyInfoMap {
+  const directoryPath = path.join(__dirname, '../registry/cardano-foundation/mappings');
+
+  const result: Record<string, any> = {};
+
+  try {
+    const filenames = fs.readdirSync(directoryPath);
+    filenames.forEach(file => {
+      const filePath = `${directoryPath}/${file}`;
+      const data = fs.readFileSync(filePath, 'utf8');
+      const policyData = JSON.parse(data);
+      if (policyData?.['policy']) {
+        result[policyData?.['policy']] = {
+          name: policyData['name']?.['value'],
+          ticker: policyData['ticker']?.['value'],
+          policy: policyData['policy'],
+          //logo: policyData['logo']?.['value'],
+          url: policyData['url']?.['value'],
+          decimals: policyData['decimals']?.['value'],
+        };
+      }
+    });
+  } catch (e) {
+    console.log(`Error getting token regsitry:${e}`);
+  }
+  return result;
+}

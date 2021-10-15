@@ -23,7 +23,13 @@ nvm install
 npm install
 
 # run the server
-npm run dev
+npm run dev:watch
+```
+
+Production build
+
+```
+npm run build
 ```
 
 _Never put production credentials into repository!_
@@ -35,3 +41,5 @@ This will build to a container with the docker file. The container is using the 
 ## Tests
 
 ## API
+
+Post -/v1/getTokenInfo
