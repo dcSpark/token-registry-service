@@ -1,0 +1,52 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": ["plugin:@typescript-eslint/recommended", "eslint:recommended", "prettier"],
+  "plugins": ["import", "unused-imports"],
+  "env": { "node": true, "jest": true },
+  "overrides": [
+    {
+      "files": ["src/**/*.ts"],
+      "parserOptions": {
+        "ecmaVersion": 2019,
+        "sourceType": "module"
+      }
+    }
+  ],
+  "rules": {
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ],
+    "max-len": ["warn", 160],
+    "import/no-default-export": "error",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "no-unused-expressions": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "@typescript/no-var-requires": "off",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "disallowTypeAnnotations": false
+      }
+    ],
+    "unused-imports/no-unused-imports": "warn",
+    "no-undef": "warn",
+    "@typescript-eslint/typedef": [
+      "off",
+      {
+        "arrowParameter": false,
+        "variableDeclaration": true
+      }
+    ]
+  }
+}
