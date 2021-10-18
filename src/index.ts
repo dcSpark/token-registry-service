@@ -25,5 +25,7 @@ router.use('/v1', tokenRoutes);
 
 const server = http.createServer(router);
 const port: number = CONFIG.APIGenerated.port;
+
 export const tokenRegistryData = readTokenRegistryMappings();
+
 server.listen(port, () => console.log(`Listening on ${port}`));

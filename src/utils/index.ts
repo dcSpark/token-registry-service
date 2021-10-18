@@ -6,8 +6,6 @@ import type { PolicyInfoMap } from './../api/v1-get-token-info';
 
 export const contentTypeHeaders = { headers: { 'Content-Type': 'application/json' } };
 
-export const errMsgs = { noValue: 'no value' };
-
 type Wrapper = (router: Router) => void;
 
 export const applyMiddleware = (middlewareWrappers: Wrapper[], router: Router): void => {
@@ -25,7 +23,7 @@ export type Nullable<T> = T | null;
 export function readTokenRegistryMappings(): PolicyInfoMap {
   const directoryPath = path.join(__dirname, '../registry/cardano-foundation/mappings');
 
-  const result: Record<string, any> = {};
+  const result: PolicyInfoMap = {};
 
   try {
     const filenames = fs.readdirSync(directoryPath);
@@ -38,7 +36,7 @@ export function readTokenRegistryMappings(): PolicyInfoMap {
           name: policyData['name']?.['value'],
           ticker: policyData['ticker']?.['value'],
           policy: policyData['policy'],
-          //logo: policyData['logo']?.['value'],
+          logo: policyData['logo']?.['value'],
           url: policyData['url']?.['value'],
           decimals: policyData['decimals']?.['value'],
         };

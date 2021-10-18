@@ -8,19 +8,21 @@ export type PolicyInfoMap = Record<
     decimals?: number;
     ticker?: string;
     url?: string;
+    policy: string;
+    logo?: string;
   }
 >;
 interface IReq extends IBaseRequest {
-  body: Array<{ policyId: string /* hex */; name: string /* hex */ }>;
+  body: { policyIdArr: Array<{ policyId: string /* hex */; name: string /* hex */ }> };
 }
 interface IRes extends IBaseResponse {
   json: (body: { success?: boolean; data: PolicyInfoMap }) => this;
 }
 
 export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
-  const policyIdArr = req.body;
-  console.log(`policyIdArr`, policyIdArr);
-  if (policyIdArr.length == null) {
+  const { policyIdArr } = req.body;
+
+  if (policyIdArr == null || policyIdArr?.length == 0) {
     return res.json({
       success: false,
       data: {},
