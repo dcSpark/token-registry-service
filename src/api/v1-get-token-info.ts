@@ -16,7 +16,7 @@ interface IReq extends IBaseRequest {
   body: { policyIdArr: Array<{ policyId: string /* hex */; name: string /* hex */ }> };
 }
 interface IRes extends IBaseResponse {
-  json: (body: { success?: boolean; data: PolicyInfoMap }) => this;
+  json: (body: { success?: boolean; data: PolicyInfoMap; message?: string }) => this;
 }
 
 export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
@@ -26,6 +26,7 @@ export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
     return res.json({
       success: false,
       data: {},
+      message: 'Invalid input.',
     });
   }
 
@@ -33,6 +34,7 @@ export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
     if (tokenRegistryData?.[input.policyId] != null) {
       res[input.policyId] = tokenRegistryData?.[input.policyId];
     }
+    // What to return in case there is not informationa about policyID?
     return res;
   }, {});
 

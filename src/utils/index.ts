@@ -43,7 +43,7 @@ export function readTokenRegistryMappings(): PolicyInfoMap {
       }
     });
   } catch (e) {
-    console.log(`Error getting token regsitry:${e}`);
+    console.error(`Error getting token regsitry: ${e}`);
   }
   return result;
 }
