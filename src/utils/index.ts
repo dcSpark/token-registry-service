@@ -31,15 +31,18 @@ export function readTokenRegistryMappings(): PolicyInfoMap {
       const filePath = `${directoryPath}/${file}`;
       const data = fs.readFileSync(filePath, 'utf8');
       const policyData = JSON.parse(data);
+
       if (policyData?.['policy']) {
-        result[policyData?.['policy']] = {
-          name: policyData['name']?.['value'],
-          ticker: policyData['ticker']?.['value'],
-          policy: policyData['policy'],
-          logo: policyData['logo']?.['value'],
-          url: policyData['url']?.['value'],
-          decimals: policyData['decimals']?.['value'],
-        };
+        result[policyData?.['policy']] = JSON.parse(
+          JSON.stringify({
+            name: policyData['name']?.['value'],
+            ticker: policyData['ticker']?.['value'],
+            policy: policyData['policy'],
+            logo: policyData['logo']?.['value'],
+            url: policyData['url']?.['value'],
+            decimals: policyData['decimals']?.['value'],
+          })
+        );
       }
     });
   } catch (e) {

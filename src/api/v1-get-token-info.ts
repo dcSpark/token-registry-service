@@ -12,17 +12,18 @@ export type PolicyInfoMap = Record<
     logo?: string;
   }
 >;
+type PolicyIdAssetMapType = Record<string, Array<string>>;
 interface IReq extends IBaseRequest {
-  body: { policyIdArr: Array<{ policyId: string /* hex */; name: string /* hex */ }> };
+  body: { policyIdAssetMap: PolicyIdAssetMapType };
 }
 interface IRes extends IBaseResponse {
   json: (body: { success?: boolean; data: PolicyInfoMap; message?: string }) => this;
 }
 
 export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
-  const { policyIdArr } = req.body;
+  const { policyIdAssetMap } = req.body;
 
-  if (policyIdArr == null || policyIdArr?.length == 0) {
+  if (policyIdAssetMap == null) {
     return res.json({
       success: false,
       data: {},
@@ -30,11 +31,10 @@ export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
     });
   }
 
-  const result = policyIdArr.reduce<PolicyInfoMap>((res, input) => {
-    if (tokenRegistryData?.[input.policyId] != null) {
-      res[input.policyId] = tokenRegistryData?.[input.policyId];
+  const result = Object.keys(policyIdAssetMap).reduce<PolicyInfoMap>((res, policyId: string) => {
+    if (tokenRegistryData?.[policyId] != null) {
+      res[policyId] = tokenRegistryData?.[policyId];
     }
-    // What to return in case there is not informationa about policyID?
     return res;
   }, {});
 
