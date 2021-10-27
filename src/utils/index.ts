@@ -1,8 +1,13 @@
 import type { Router } from 'express';
+import path from 'path';
+import fs from 'fs';
+
+import type { PolicyIdAssetInfoMap } from './../api/v1-get-token-info';
 
 export const contentTypeHeaders = { headers: { 'Content-Type': 'application/json' } };
 
-export const errMsgs = { noValue: 'no value' };
+// https://github.com/cardano-foundation/cardano-token-registry
+const POLICYID_HEX_INDEX = 56;
 
 type Wrapper = (router: Router) => void;
 
@@ -17,3 +22,54 @@ export function assertNever(x: never): never {
 }
 
 export type Nullable<T> = T | null;
+
+export function readTokenRegistryMappings(): PolicyIdAssetInfoMap {
+  const directoryPath = path.join(__dirname, '../registry/cardano-foundation/mappings');
+
+  const result: PolicyIdAssetInfoMap = {};
+  let filesRead = 0;
+  let totalFiles = 0;
+
+  try {
+    const filenames = fs.readdirSync(directoryPath);
+    totalFiles = filenames.length;
+    console.log(`Total files in CF registry: ${totalFiles}`);
+    filenames.forEach(file => {
+      try {
+        const filePath = `${directoryPath}/${file}`;
+        const data = fs.readFileSync(filePath, 'utf8');
+        const policyData = JSON.parse(data);
+
+        const subjectId = policyData['subject'].trim();
+        const subjectLen = subjectId.length;
+
+        // first 56 letters-> policyIdHex
+        const policyIdHex = subjectId.substring(0, POLICYID_HEX_INDEX);
+        // remaining letters-> assetNameHex
+        const assetNameHex = subjectId.substring(POLICYID_HEX_INDEX, subjectLen);
+
+        if (result[policyIdHex] == null) {
+          result[policyIdHex] = {};
+        }
+        result[policyIdHex][assetNameHex] = JSON.parse(
+          JSON.stringify({
+            name: policyData['name']?.['value'],
+            ticker: policyData['ticker']?.['value'],
+            policy: policyIdHex,
+            logo: policyData['logo']?.['value'],
+            url: policyData['url']?.['value'],
+            decimals: policyData['decimals']?.['value'],
+          })
+        );
+        ++filesRead;
+      } catch (e) {
+        console.error(`Error reading file: ${e} for subject: ${file}`);
+      }
+    });
+  } catch (e) {
+    console.error(`Error getting token regsitry: ${e} for subject:${directoryPath}`);
+  }
+  console.log(`Total files read: ${filesRead}`);
+  console.log(`Error reading files: ${totalFiles - filesRead}`);
+  return result;
+}

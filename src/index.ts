@@ -1,7 +1,7 @@
 import http from 'http';
 import express from 'express';
 
-import { applyMiddleware } from './utils';
+import { applyMiddleware, readTokenRegistryMappings } from './utils';
 import * as middleware from './middleware';
 import { tokenRoutes } from './api';
 
@@ -25,5 +25,7 @@ router.use('/v1', tokenRoutes);
 
 const server = http.createServer(router);
 const port: number = CONFIG.APIGenerated.port;
+
+export const tokenRegistryData = readTokenRegistryMappings();
 
 server.listen(port, () => console.log(`Listening on ${port}`));
