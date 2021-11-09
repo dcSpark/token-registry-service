@@ -1,9 +1,10 @@
 {
   "name": "token-registry-service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Token registry service for Cardano",
   "main": "src/index.ts",
   "scripts": {
+    "buildtsc": "tsc",
     "build": "NODE_ENV=production webpack --config ./webpack.production.config.ts",
     "postinstall": "npm run typecheck",
     "typecheck": "tsc --project tsconfig.typecheck.json",
