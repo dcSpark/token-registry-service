@@ -14,6 +14,8 @@ COPY package*.json ./
 
 COPY . .
 
+RUN git submodule update --init
+
 RUN npm install
 RUN npm run build
 
