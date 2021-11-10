@@ -25,4 +25,5 @@ RUN npm run build
 #List the Directory Structure
 
 EXPOSE 8091
+CMD ["git", "submodule", "update", "--init"]
 CMD ["pm2-runtime", "--json", "pm2.yaml"]
