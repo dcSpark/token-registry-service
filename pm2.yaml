@@ -3,3 +3,4 @@ apps:
     instances: 2
     exec_mode: cluster
     name: token-registry-service
+    
