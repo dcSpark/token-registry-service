@@ -1,6 +1,4 @@
 apps:
   - script: ./build/index.js
-    instances: 2
-    exec_mode: cluster
     name: token-registry-service
     
