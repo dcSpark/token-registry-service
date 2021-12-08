@@ -1,7 +1,7 @@
 import http from 'http';
 import express from 'express';
 
-import { applyMiddleware, readTokenRegistryMappings } from './utils';
+import { applyMiddleware, readCNFTPolicyIds, readTokenRegistryMappings } from './utils';
 import * as middleware from './middleware';
 import { tokenRoutes } from './api';
 
@@ -27,5 +27,6 @@ const server = http.createServer(router);
 const port: number = CONFIG.APIGenerated.port;
 
 export const tokenRegistryData = readTokenRegistryMappings();
+export const tokenPolicyIdInfoMap = readCNFTPolicyIds();
 
 server.listen(port, () => console.log(`Listening on ${port}`));

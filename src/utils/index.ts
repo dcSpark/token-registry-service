@@ -11,6 +11,15 @@ const POLICYID_HEX_INDEX = 56;
 
 type Wrapper = (router: Router) => void;
 
+export type CnftPolicyDataType = [
+  {
+    project: string;
+    tags?: string[];
+    policies: string[];
+  }
+];
+export type PolicyIdInfoMap = Record<string, { projectName?: string }>;
+
 export const applyMiddleware = (middlewareWrappers: Wrapper[], router: Router): void => {
   for (const wrapper of middlewareWrappers) {
     wrapper(router);
@@ -67,9 +76,79 @@ export function readTokenRegistryMappings(): PolicyIdAssetInfoMap {
       }
     });
   } catch (e) {
-    console.error(`Error getting token regsitry: ${e} for subject:${directoryPath}`);
+    console.error(`Error getting token registry: ${e} for subject:${directoryPath}`);
   }
   console.log(`Total files read: ${filesRead}`);
   console.log(`Error reading files: ${totalFiles - filesRead}`);
   return result;
 }
+
+export function readCNFTPolicyIds(): PolicyIdInfoMap {
+  const policyIdInfoMap: PolicyIdInfoMap = {};
+
+  // CNFT policyId follows - https://github.com/Cardano-NFTs/policyIDs/blob/main/internal/policy-id-schema.json
+  const directoryPath = path.join(__dirname, '../registry/policyIDs/projects');
+  let files: string[] = [];
+  // get files paths
+  files = getFilesRecursively(directoryPath, files);
+
+  console.log(`Total project files read from CNFT repository: ${files.length}`);
+
+  files.forEach((filePath: string) => {
+    try {
+      const data = fs.readFileSync(filePath, 'utf8');
+      const policyData: any = JSON.parse(data);
+
+      if (Array.isArray(policyData)) {
+        (policyData as CnftPolicyDataType).forEach(item => {
+          const projectName = item.project;
+
+          item.policies.forEach(policy => {
+            if (policyIdInfoMap[policy] == null) {
+              policyIdInfoMap[policy] = {};
+            }
+
+            policyIdInfoMap[policy] = { ...policyIdInfoMap[policy], projectName };
+          });
+        });
+      } else if (typeof policyData === 'object') {
+        const projectName = policyData.project;
+
+        policyData.policies.forEach((policy: string) => {
+          if (policyIdInfoMap[policy] == null) {
+            policyIdInfoMap[policy] = {};
+          }
+
+          policyIdInfoMap[policy] = { ...policyIdInfoMap[policy], projectName };
+        });
+      }
+    } catch (e) {
+      console.log(`Error reading CNFT project file ${filePath}. Error: ${e}`);
+    }
+  });
+  console.log(`Total unique policyIDs read from CNFT: ${Object.keys(policyIdInfoMap).length}`);
+
+  return policyIdInfoMap;
+}
+
+function getFilesRecursively(directoryPath: string, files: string[]): string[] {
+  try {
+    const filesInDirectory = fs.readdirSync(directoryPath);
+    for (const file of filesInDirectory) {
+      const absolute = path.join(directoryPath, file);
+      if (fs.statSync(absolute).isDirectory()) {
+        getFilesRecursively(absolute, files);
+      } else {
+        files.push(absolute);
+      }
+    }
+  } catch (e) {
+    console.log(
+      `Error reading CNFT project  file from directory ${directoryPath}. Error: ${JSON.stringify(
+        e
+      )}`
+    );
+  }
+  return files;
+}
+readCNFTPolicyIds();
