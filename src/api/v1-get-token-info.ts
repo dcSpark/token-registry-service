@@ -1,4 +1,4 @@
-import { tokenRegistryData } from './../index';
+import { tokenRegistryData, tokenPolicyIdInfoMap } from './../index';
 import type { IBaseRequest, IBaseResponse } from './../types/types';
 
 type AssetInfoMap = Record<
@@ -10,6 +10,7 @@ type AssetInfoMap = Record<
     url?: string;
     policy: string;
     logo?: string;
+    projectName?: string;
   }
 >;
 export type PolicyIdAssetInfoMap = Record<string, AssetInfoMap>;
@@ -39,9 +40,16 @@ export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
 
       // construct AssetInfoMap
       const assetInfoMap = assetIds.reduce<AssetInfoMap>((assetMap, assetId) => {
+        // add data from CF token registry
         if (tokenRegistryData?.[policyId] != null) {
           assetMap[assetId] = tokenRegistryData?.[policyId][assetId];
         }
+
+        // add data from from CNFT
+        if (tokenPolicyIdInfoMap?.[policyId] != null) {
+          assetMap[assetId] = { ...assetMap[assetId], ...(tokenPolicyIdInfoMap?.[policyId] ?? {}) };
+        }
+
         return assetMap;
       }, {});
 
