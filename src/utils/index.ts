@@ -151,4 +151,3 @@ function getFilesRecursively(directoryPath: string, files: string[]): string[] {
   }
   return files;
 }
-readCNFTPolicyIds();
