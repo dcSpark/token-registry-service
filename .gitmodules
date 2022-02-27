@@ -1,6 +1,9 @@
 [submodule "registry/cardano-foundation"]
 	path = registry/cardano-foundation
 	url = https://github.com/cardano-foundation/cardano-token-registry
+	branch = master
+
 [submodule "registry/policyIDs"]
 	path = registry/policyIDs
 	url = https://github.com/Cardano-NFTs/policyIDs
+	branch = main
