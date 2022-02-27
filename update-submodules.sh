@@ -17,3 +17,10 @@ git tag ${LATEST_TAG%.*}.${NEW_PATCH}
 
 git push
 git push --tags
+
+MESSAGE="<!here> token-registries updated to ${LATEST_TAG%.*}.${NEW_PATCH}"
+MESSAGE+="\\nDone by: ${USER}\\nOn host: ${HOSTNAME}"
+
+curl -X POST -H 'Content-type: application/json' \
+    --data "{'text':'${MESSAGE}'}" \
+    https://hooks.slack.com/services/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
