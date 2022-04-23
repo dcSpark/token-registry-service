@@ -40,6 +40,9 @@ This will build to a container with the docker file. The container is using the 
 
 ## Tests
 
+1. On one terminal, run `npm run dev:watch`
+2. On a second terminal, run `npm run test`
+
 ## API
 
 Post -/v1/getTokenInfo
