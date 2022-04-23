@@ -16,3 +16,13 @@ export interface Route<Req, Res> {
   method: string;
   handler: Handler<Req, Res>;
 }
+
+export type RegistryData = {
+  name?: string;
+  decimals?: number;
+  ticker?: string;
+  url?: string;
+  policy: string;
+  logo?: string;
+  projectName?: string;
+};

@@ -1,6 +1,7 @@
 import type { Router } from 'express';
 import path from 'path';
 import fs from 'fs';
+import AssetFingerprint from '@emurgo/cip14-js';
 
 import type { PolicyIdAssetInfoMap } from './../api/v1-get-token-info';
 
@@ -80,6 +81,25 @@ export function readTokenRegistryMappings(): PolicyIdAssetInfoMap {
   }
   console.log(`Total files read: ${filesRead}`);
   console.log(`Error reading files: ${totalFiles - filesRead}`);
+  return result;
+}
+
+type FingerprintLookupMap = {
+  [x: string]: { policyId: string, assetName: string };
+};
+export function createFingerprintLookup(mapping: PolicyIdAssetInfoMap): FingerprintLookupMap {
+  const result: FingerprintLookupMap = {};
+  for (const [policyId, assetNames] of Object.entries(mapping)) {
+    for (const assetName of Object.keys(assetNames)) {
+      const assetFingerprint = AssetFingerprint.fromParts(
+        Buffer.from(policyId, 'hex'),
+        Buffer.from(assetName, 'hex'),
+      );
+
+      result[assetFingerprint.fingerprint()] = { policyId, assetName };
+    }
+  }
+
   return result;
 }
 

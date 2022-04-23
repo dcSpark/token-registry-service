@@ -1,20 +1,12 @@
 import { tokenRegistryData, tokenPolicyIdInfoMap } from './../index';
-import type { IBaseRequest, IBaseResponse } from './../types/types';
+import type { IBaseRequest, IBaseResponse, RegistryData } from './../types/types';
 
 type AssetInfoMap = Record<
   string,
-  {
-    name?: string;
-    decimals?: number;
-    ticker?: string;
-    url?: string;
-    policy: string;
-    logo?: string;
-    projectName?: string;
-  }
+  RegistryData
 >;
 export type PolicyIdAssetInfoMap = Record<string, AssetInfoMap>;
-type PolicyIdAssetMapType = Record<string, Array<string>>;
+export type PolicyIdAssetMapType = Record<string, Array<string>>;
 interface IReq extends IBaseRequest {
   body: { policyIdAssetMap: PolicyIdAssetMapType };
 }
@@ -33,8 +25,17 @@ export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
     });
   }
 
+  const result = buildTokenInfoResult(policyIdAssetMap);
+
+  return res.json({
+    success: true,
+    data: result,
+  });
+}
+
+export function buildTokenInfoResult(policyIdAssetMap: PolicyIdAssetMapType): PolicyIdAssetInfoMap {
   // construct PolicyIdAssetInfoMap
-  const result = Object.keys(policyIdAssetMap).reduce<PolicyIdAssetInfoMap>(
+  return Object.keys(policyIdAssetMap).reduce<PolicyIdAssetInfoMap>(
     (policyIdAssetInfoMap, policyId: string) => {
       const assetIds: string[] = policyIdAssetMap[policyId];
 
@@ -61,9 +62,4 @@ export async function getTokenInfo(req: IReq, res: IRes): Promise<IRes> {
     },
     {}
   );
-
-  return res.json({
-    success: true,
-    data: result,
-  });
 }

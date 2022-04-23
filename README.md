@@ -45,4 +45,10 @@ This will build to a container with the docker file. The container is using the 
 
 ## API
 
-Post -/v1/getTokenInfo
+Post - `/v1/getTokenInfo`
+- Input: `{ policyIdAssetMap: Record<string, string[]> }`
+- Output: `Record<string, Record<string, RegistryData>>`
+
+Post - `/v1/getFingerprintInfo`
+- Input: `{ fingerprintIdAssets: string[] }`
+- Output: `Record<string, RegistryData>`

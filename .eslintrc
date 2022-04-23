@@ -6,7 +6,7 @@
   "env": { "node": true, "jest": true },
   "overrides": [
     {
-      "files": ["src/**/*.ts"],
+      "files": ["src/**/*.ts", "tests/**/*.ts"],
       "parserOptions": {
         "ecmaVersion": 2019,
         "sourceType": "module"

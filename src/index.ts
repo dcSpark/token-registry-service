@@ -1,7 +1,7 @@
 import http from 'http';
 import express from 'express';
 
-import { applyMiddleware, readCNFTPolicyIds, readTokenRegistryMappings } from './utils';
+import { applyMiddleware, createFingerprintLookup, readCNFTPolicyIds, readTokenRegistryMappings } from './utils';
 import * as middleware from './middleware';
 import { tokenRoutes } from './api';
 
@@ -27,6 +27,7 @@ const server = http.createServer(router);
 const port: number = CONFIG.APIGenerated.port;
 
 export const tokenRegistryData = readTokenRegistryMappings();
+export const tokenFingerprintLookup = createFingerprintLookup(tokenRegistryData);
 export const tokenPolicyIdInfoMap = readCNFTPolicyIds();
 
 server.listen(port, () => console.log(`Listening on ${port}`));

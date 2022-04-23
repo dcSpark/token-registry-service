@@ -23,6 +23,7 @@
     }
   },
   "dependencies": {
+    "@emurgo/cip14-js": "3.0.1",
     "axios": "^0.21.4",
     "compression": "^1.7.4",
     "config": "^3.3.6",
