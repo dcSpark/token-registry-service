@@ -24,5 +24,6 @@ export type RegistryData = {
   url?: string;
   policy: string;
   logo?: string;
+  description?: string,
   projectName?: string;
 };

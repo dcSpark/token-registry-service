@@ -66,6 +66,7 @@ export function readTokenRegistryMappings(): PolicyIdAssetInfoMap {
             name: policyData['name']?.['value'],
             ticker: policyData['ticker']?.['value'],
             policy: policyIdHex,
+            description: policyData['description']?.['value'],
             logo: policyData['logo']?.['value'],
             url: policyData['url']?.['value'],
             decimals: policyData['decimals']?.['value'],
