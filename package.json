@@ -1,6 +1,6 @@
 {
   "name": "token-registry-service",
-  "version": "v0.2.41",
+  "version": "v0.2.42",
   "description": "Token registry service for Cardano",
   "main": "src/index.ts",
   "scripts": {
