@@ -26,7 +26,7 @@ npm install
 npm run dev:watch
 ```
 
-Production build
+Production build:
 
 ```
 npm run build
