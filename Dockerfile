@@ -8,7 +8,8 @@ WORKDIR /app
 
 RUN apk add git
 # Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# A wildcard is used to ensure both package.json
+# AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
 
@@ -27,3 +28,4 @@ RUN npm run build
 EXPOSE 8091
 CMD ["git", "submodule", "update", "--init"]
 CMD ["pm2-runtime", "--json", "pm2.yaml"]
+
