@@ -2,6 +2,6 @@ version: '3.9'
 
 services:
   token-registry-service:
-  build: .
-  ports:
+    build: .
+    ports:
     - 8091:8091
