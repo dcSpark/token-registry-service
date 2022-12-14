@@ -15,7 +15,7 @@ COPY package*.json ./
 
 COPY . .
 
-RUN git submodule update --init
+#RUN git submodule update --init
 
 RUN npm install
 RUN npm run build
@@ -24,8 +24,10 @@ RUN npm run build
 # RUN npm ci --only=production
 
 #List the Directory Structure
-
+RUN chmod 755 ./entrypoint.sh
 EXPOSE 8091
-CMD ["git", "submodule", "update", "--init"]
-CMD ["pm2-runtime", "--json", "pm2.yaml"]
+
+ENTRYPOINT ["./entrypoint.sh"]
+#CMD ["git", "submodule", "update", "--init"]
+#CMD ["pm2-runtime", "--json", "pm2.yaml"]
 
