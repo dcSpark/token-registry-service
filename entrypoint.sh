@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Updating submodules:"
-git submodule update --init
+git submodule update --remote --init
 
 echo "Submodule status: "
 git submodule status
