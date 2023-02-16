@@ -30,4 +30,3 @@ EXPOSE 8091
 ENTRYPOINT ["./entrypoint.sh"]
 #CMD ["git", "submodule", "update", "--init"]
 #CMD ["pm2-runtime", "--json", "pm2.yaml"]
-
