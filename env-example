@@ -1,0 +1,4 @@
+# value for tesnets: preprod and preview
+TOKEN_METADATA_DIR="../registry/iohk-registry-testnet/registry"
+# value for mainnet:
+TOKEN_METADATA_DIR="../registry/cardano-foundation/mappings"

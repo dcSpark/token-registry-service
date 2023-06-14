@@ -5,3 +5,6 @@ services:
     build: .
     ports:
     - 8091:8091
+    environment:
+    - TOKEN_METADATA_DIR=${TOKEN_METADATA_DIR:-../registry/cardano-foundation/mappings}
+
