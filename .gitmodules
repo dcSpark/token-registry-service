@@ -8,3 +8,8 @@
 	url = https://github.com/Cardano-NFTs/policyIDs
 	branch = main
 
+
+[submodule "registry/iohk-registry-testnet"]
+	path = registry/iohk-registry-testnet
+	url = https://github.com/input-output-hk/metadata-registry-testnet
+	branch = master
