@@ -2,7 +2,7 @@ import type { Router } from 'express';
 import path from 'path';
 import fs from 'fs';
 import AssetFingerprint from '@emurgo/cip14-js';
-
+import CONFIG from "../../config/default";
 import type { PolicyIdAssetInfoMap } from './../api/v1-get-token-info';
 
 export const contentTypeHeaders = { headers: { 'Content-Type': 'application/json' } };
@@ -34,7 +34,7 @@ export function assertNever(x: never): never {
 export type Nullable<T> = T | null;
 
 export function readTokenRegistryMappings(): PolicyIdAssetInfoMap {
-  const directoryPath = path.join(__dirname, '../registry/cardano-foundation/mappings');
+  const directoryPath = path.join(__dirname, CONFIG.APIGenerated.tokenMetadataDir);
 
   const result: PolicyIdAssetInfoMap = {};
   let filesRead = 0;

@@ -5,7 +5,8 @@ interface ConfigType {
   },
   APIGenerated: {
     refreshRate: number,
-    port: number
+    port: number,
+    tokenMetadataDir: string
   },
 }
 
